@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import ChatService from '../services/ChatService';
+import UserInfoForm from './UserInfoForm';
 import './ChatInterface.css';
 
 const ChatInterface = ({ isConnected, setIsConnected }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [threadId, setThreadId] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -18,11 +20,12 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
     scrollToBottom();
   }, [messages]);
 
+  // Nově: vytvoření threadu až po vyplnění userInfo
   useEffect(() => {
-    // Vytvořit nový thread při načtení
+    if (!userInfo) return;
     const initializeChat = async () => {
       try {
-        const response = await ChatService.createThread();
+        const response = await ChatService.createThread(userInfo);
         setThreadId(response.data.threadId);
         setIsConnected(true);
       } catch (error) {
@@ -30,9 +33,8 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
         setIsConnected(false);
       }
     };
-
     initializeChat();
-  }, []);
+  }, [userInfo, setIsConnected]);
 
   const handleSendMessage = async (message) => {
     if (!message.trim() || isLoading) return;
@@ -49,30 +51,35 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
 
     try {
       const response = await ChatService.sendMessage(message, threadId);
-      
       const assistantMessage = {
         id: Date.now() + 1,
         role: 'assistant',
         content: response.data.assistantMessage,
         timestamp: new Date().toISOString()
       };
-
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Chyba při odesílání zprávy:', error);
-      
       const errorMessage = {
         id: Date.now() + 1,
         role: 'error',
         content: 'Nepodařilo se odeslat zprávu. Zkuste to prosím znovu.',
         timestamp: new Date().toISOString()
       };
-
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Pokud není userInfo, zobraz UserInfoForm
+  if (!userInfo) {
+    return (
+      <div className="chat-interface">
+        <UserInfoForm onSubmit={setUserInfo} />
+      </div>
+    );
+  }
 
   return (
     <div className="chat-interface">
@@ -85,11 +92,9 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
               <p>Začněte konverzaci s naším AI Chatbotem.</p>
             </div>
           )}
-          
           {messages.map((message) => (
             <ChatMessage key={message.id} message={message} />
           ))}
-          
           {isLoading && (
             <div className="loading-message">
               <div className="loading-dots">
@@ -100,10 +105,8 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
               <p>Asistent píše...</p>
             </div>
           )}
-          
           <div ref={messagesEndRef} />
         </div>
-        
         <ChatInput 
           onSendMessage={handleSendMessage}
           isLoading={isLoading}
