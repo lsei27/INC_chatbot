@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
+// --- DIAGNOSTICKÝ KROK ZAČÍNÁ ZDE ---
+console.log('--- DEBUG: Pokouším se importovat chatService ---');
+const chatService = require('../services/chatService');
+console.log('--- DEBUG: Objekt chatService po importu: ---');
+console.log(chatService);
+console.log('--- DEBUG: Konec diagnostiky importu ---');
+
+// --- DIAGNOSTICKÝ KROK KONČÍ ZDE ---
+
 // 🚀 SPRÁVNÝ IMPORT: Načte celou instanci služby, kterou jste exportoval
 const chatService = require('../services/chatService');
 
