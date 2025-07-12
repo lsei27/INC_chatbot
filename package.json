@@ -3,18 +3,22 @@
   "version": "1.0.0",
   "description": "Frontend aplikace pro chatbot s OpenAI asistentem",
   "private": true,
+  "homepage": "https://lsei27.github.io/INC_chatbot",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "axios": "^1.6.0",
-    "lucide-react": "^0.294.0"
+    "lucide-react": "^0.294.0",
+    "react-markdown": "^8.0.7"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.17.0",
