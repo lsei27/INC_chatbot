@@ -29,5 +29,8 @@
     "api"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": "20.x"
+  }
 }
