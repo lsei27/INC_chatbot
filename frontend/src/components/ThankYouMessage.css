@@ -38,10 +38,11 @@
   font-size: 2.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  background: linear-gradient(45deg, #007AFF, #5856D6);
+  background: linear-gradient(90deg, #fff, #bdbdbd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: unset;
 }
 
 .thank-you-content p {
@@ -52,12 +53,12 @@
 }
 
 .contact-info {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(229, 49, 55, 0.08);
   border-radius: 15px;
   padding: 2rem;
   margin: 2rem 0;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid #E53137;
 }
 
 .contact-info h3 {
