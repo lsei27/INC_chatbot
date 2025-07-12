@@ -19,6 +19,60 @@
   height: 100%;
 }
 
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px 15px 0 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.chat-icon {
+  font-size: 1.2rem;
+}
+
+.end-chat-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 59, 48, 0.1);
+  color: #FF3B30;
+  border: 1px solid rgba(255, 59, 48, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.end-chat-btn:hover {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: rgba(255, 59, 48, 0.5);
+  transform: translateY(-1px);
+}
+
+.end-chat-btn:active {
+  transform: translateY(0);
+}
+
+.end-chat-icon {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
 .chat-messages {
   flex: 1;
   overflow-y: auto;

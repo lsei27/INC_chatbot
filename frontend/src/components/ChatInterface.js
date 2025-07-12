@@ -3,6 +3,7 @@ import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import ChatService from '../services/ChatService';
 import UserInfoForm from './UserInfoForm';
+import ThankYouMessage from './ThankYouMessage';
 import './ChatInterface.css';
 
 const ChatInterface = ({ isConnected, setIsConnected }) => {
@@ -10,6 +11,7 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [threadId, setThreadId] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [showThankYou, setShowThankYou] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -72,6 +74,30 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
     }
   };
 
+  const handleEndChat = () => {
+    setShowThankYou(true);
+  };
+
+  const handleRestartChat = () => {
+    setShowThankYou(false);
+    setUserInfo(null);
+    setMessages([]);
+    setThreadId(null);
+    setIsConnected(false);
+  };
+
+  // Pokud se zobrazuje poděkování
+  if (showThankYou) {
+    return (
+      <div className="chat-interface">
+        <ThankYouMessage 
+          userInfo={userInfo} 
+          onRestartChat={handleRestartChat} 
+        />
+      </div>
+    );
+  }
+
   // Pokud není userInfo, zobraz UserInfoForm
   if (!userInfo) {
     return (
@@ -84,6 +110,20 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
   return (
     <div className="chat-interface">
       <div className="chat-container">
+        <div className="chat-header">
+          <div className="chat-title">
+            <span className="chat-icon">💬</span>
+            <span>IN CATERING Chat</span>
+          </div>
+          <button 
+            className="end-chat-btn"
+            onClick={handleEndChat}
+            title="Ukončit chat"
+          >
+            <span className="end-chat-icon">✕</span>
+            Ukončit
+          </button>
+        </div>
         <div className="chat-messages">
           {messages.length === 0 && !isLoading && (
             <div className="welcome-message">
