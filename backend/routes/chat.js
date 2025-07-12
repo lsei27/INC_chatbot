@@ -1,72 +1,64 @@
 const express = require('express');
 const router = express.Router();
+
+// 🚀 SPRÁVNÝ IMPORT: Načte celou instanci služby, kterou jste exportoval
 const chatService = require('../services/chatService');
 
-// POST /api/chat/message - Odeslat zprávu asistentovi
-router.post('/message', async (req, res) => {
+// --- Routes ---
+
+/**
+ * @route   POST /api/chat/thread
+ * @desc    Vytvoří nové prázdné konverzační vlákno (thread)
+ * @access  Public
+ */
+router.post('/thread', async (req, res, next) => {
+    try {
+        // Zavolá metodu na naší naimportované službě
+        const thread = await chatService.createThread();
+        res.status(201).json({ 
+            message: 'Thread byl úspěšně vytvořen',
+            threadId: thread.id 
+        });
+    } catch (error) {
+        // Předá chybu centrálnímu error handleru
+        next(error);
+    }
+});
+
+/**
+ * @route   POST /api/chat/message
+ * @desc    Odešle zprávu asistentovi a získá odpověď
+ * @access  Public
+ */
+router.post('/message', async (req, res, next) => {
     try {
         const { message, threadId } = req.body;
-        
-        if (!message || typeof message !== 'string') {
-            return res.status(400).json({
-                error: 'Invalid message',
-                message: 'Zpráva je povinná a musí být string'
-            });
+
+        if (!message) {
+            return res.status(400).json({ error: 'Chybí zpráva (message) v těle požadavku' });
         }
 
-        const result = await chatService.sendMessage(message, threadId);
-        
-        res.json({
-            success: true,
-            data: result
-        });
-        
+        const response = await chatService.sendMessage(message, threadId);
+        res.json(response);
+
     } catch (error) {
-        console.error('Chat error:', error);
-        res.status(500).json({
-            error: 'Chat error',
-            message: error.message
-        });
+        next(error);
     }
 });
 
-// POST /api/chat/thread - Vytvořit nový thread
-router.post('/thread', async (req, res) => {
-    try {
-        const thread = await chatService.createThread();
-        
-        res.json({
-            success: true,
-            data: { threadId: thread.id }
-        });
-        
-    } catch (error) {
-        console.error('Thread creation error:', error);
-        res.status(500).json({
-            error: 'Thread creation error',
-            message: error.message
-        });
-    }
-});
-
-// GET /api/chat/thread/:threadId - Získat historii threadu
-router.get('/thread/:threadId', async (req, res) => {
+/**
+ * @route   GET /api/chat/:threadId/messages
+ * @desc    Získá všechny zprávy z daného vlákna
+ * @access  Public
+ */
+router.get('/:threadId/messages', async (req, res, next) => {
     try {
         const { threadId } = req.params;
         const messages = await chatService.getThreadMessages(threadId);
-        
-        res.json({
-            success: true,
-            data: messages
-        });
-        
+        res.json(messages);
     } catch (error) {
-        console.error('Thread messages error:', error);
-        res.status(500).json({
-            error: 'Thread messages error',
-            message: error.message
-        });
+        next(error);
     }
 });
 
-module.exports = router; 
+module.exports = router;
