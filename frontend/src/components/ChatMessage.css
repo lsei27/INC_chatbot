@@ -14,8 +14,8 @@
 .message-bubble {
   background: #18181a;
   color: #fff;
-  border-radius: 20px;
-  padding: 16px 22px;
+  border-radius: 22px;
+  padding: 12px 18px;
   max-width: 70%;
   font-size: 1.08em;
   font-weight: 400;
@@ -27,13 +27,13 @@
   background: linear-gradient(90deg, #E53137 0%, #ff6a6a 100%);
   color: #fff;
   font-weight: 500;
-  border-radius: 22px 22px 6px 22px;
+  border-radius: 22px;
 }
 
 .chat-message.assistant .message-bubble {
-  background: #19191b;
-  color: #b3b3b3;
-  border-radius: 22px 22px 22px 6px;
+  background: #E53137;
+  color: #fff;
+  border-radius: 22px;
 }
 
 .message-user {
@@ -92,7 +92,7 @@
   font-family: 'Helvetica Neue', 'San Francisco', Arial, system-ui, sans-serif;
   font-size: 1.08em;
   background: none;
-  padding: 0;
+  padding: 6px 0;
 }
 
 .message-user .message-text {
