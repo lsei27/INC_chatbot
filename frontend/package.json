@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Frontend aplikace pro chatbot s OpenAI asistentem",
   "private": true,
+  "homepage": "https://lsei27.github.io/INC_chatbot",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
