@@ -1,115 +1,76 @@
-const OpenAI = require('openai');
-const config = require('../../config/config');
+import axios from 'axios';
 
-// Inicializace OpenAI klienta
-const openai = new OpenAI({
-    apiKey: config.openai.apiKey,
-    organization: config.openai.organization
+// Konfigurace axios
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://inc-chatbot.onrender.com/api'
+  : 'http://localhost:3001/api';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 60000, // zvýšeno na 60 sekund
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 class ChatService {
-    constructor() {
-        this.assistantId = config.openai.assistantId;
-        this.model = config.openai.model;
+  // Vytvořit nový thread
+  static async createThread() {
+    try {
+      const response = await api.post('/chat/thread');
+      return response.data;
+    } catch (error) {
+      console.error('Error creating thread:', error);
+      throw new Error('Nepodařilo se vytvořit nový thread');
     }
+  }
 
-    // Vytvořit nový thread
-    async createThread() {
-        try {
-            const thread = await openai.beta.threads.create();
-            return thread;
-        } catch (error) {
-            console.error('Error creating thread:', error);
-            throw new Error('Nepodařilo se vytvořit nový thread');
-        }
+  // Odeslat zprávu
+  static async sendMessage(message, threadId) {
+    try {
+      const response = await api.post('/chat/message', {
+        message,
+        threadId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      if (error.response) {
+        // Server vrátil chybu
+        const errorMessage = error.response.data?.message || 'Nepodařilo se odeslat zprávu';
+        throw new Error(errorMessage);
+      } else if (error.request) {
+        // Síťová chyba
+        throw new Error('Nepodařilo se připojit k serveru');
+      } else {
+        // Jiná chyba
+        throw new Error('Nastala neočekávaná chyba');
+      }
     }
+  }
 
-    // Odeslat zprávu asistentovi
-    async sendMessage(message, threadId) {
-        try {
-            // Vytvořit thread pokud neexistuje
-            if (!threadId) {
-                const thread = await this.createThread();
-                threadId = thread.id;
-            }
-
-            // Přidat zprávu do threadu
-            const threadMessage = await openai.beta.threads.messages.create(
-                threadId,
-                {
-                    role: "user",
-                    content: message
-                }
-            );
-
-            // Spustit run s asistentem
-            const run = await openai.beta.threads.runs.create(
-                threadId,
-                {
-                    assistant_id: this.assistantId
-                }
-            );
-
-            // Počkat na dokončení run
-            const result = await this.waitForRunCompletion(threadId, run.id);
-
-            // Získat odpověď asistenta
-            const messages = await openai.beta.threads.messages.list(threadId);
-            const assistantMessage = messages.data.find(msg => 
-                msg.role === 'assistant' && 
-                msg.run_id === run.id
-            );
-
-            return {
-                threadId,
-                userMessage: message,
-                assistantMessage: assistantMessage?.content[0]?.text?.value || 'Nepodařilo se získat odpověď',
-                runStatus: result.status
-            };
-
-        } catch (error) {
-            console.error('Error sending message:', error);
-            throw new Error('Nepodařilo se odeslat zprávu asistentovi');
-        }
+  // Získat historii zpráv
+  static async getThreadMessages(threadId) {
+    try {
+      const response = await api.get(`/chat/thread/${threadId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error getting thread messages:', error);
+      throw new Error('Nepodařilo se načíst historii zpráv');
     }
+  }
 
-    // Počkat na dokončení run
-    async waitForRunCompletion(threadId, runId) {
-        const maxAttempts = 30; // 30 sekund
-        let attempts = 0;
-
-        while (attempts < maxAttempts) {
-            const run = await openai.beta.threads.runs.retrieve(threadId, runId);
-            
-            if (run.status === 'completed') {
-                return run;
-            } else if (run.status === 'failed' || run.status === 'cancelled') {
-                throw new Error(`Run failed with status: ${run.status}`);
-            }
-
-            // Počkat 1 sekundu před dalším pokusem
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            attempts++;
-        }
-
-        throw new Error('Timeout waiting for run completion');
+  // Kontrola připojení k serveru
+  static async checkHealth() {
+    try {
+      const response = await api.get('/health');
+      return response.data;
+    } catch (error) {
+      console.error('Health check failed:', error);
+      throw new Error('Server není dostupný');
     }
-
-    // Získat zprávy z threadu
-    async getThreadMessages(threadId) {
-        try {
-            const messages = await openai.beta.threads.messages.list(threadId);
-            return messages.data.map(msg => ({
-                id: msg.id,
-                role: msg.role,
-                content: msg.content[0]?.text?.value || '',
-                createdAt: msg.created_at
-            }));
-        } catch (error) {
-            console.error('Error getting thread messages:', error);
-            throw new Error('Nepodařilo se získat zprávy z threadu');
-        }
-    }
+  }
 }
 
-module.exports = new ChatService(); 
+export default ChatService; 
