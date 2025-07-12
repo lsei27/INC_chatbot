@@ -1,5 +1,6 @@
 import React from 'react';
 import './ChatMessage.css';
+import ReactMarkdown from 'react-markdown';
 
 const ChatMessage = ({ message }) => {
   const { role, content, timestamp } = message;
@@ -45,7 +46,7 @@ const ChatMessage = ({ message }) => {
       
       <div className="message-content">
         <div className="message-text">
-          {content}
+          <ReactMarkdown>{content}</ReactMarkdown>
         </div>
         
         <div className="message-time">
