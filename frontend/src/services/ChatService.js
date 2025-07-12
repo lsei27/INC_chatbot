@@ -7,7 +7,7 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 60000,
+  timeout: 60000, // zvýšeno na 60 sekund
   headers: {
     'Content-Type': 'application/json',
   },
@@ -15,9 +15,9 @@ const api = axios.create({
 
 class ChatService {
   // Vytvořit nový thread
-  static async createThread() {
+  static async createThread(userInfo) {
     try {
-      const response = await api.post('/chat/thread');
+      const response = await api.post('/chat/thread', userInfo || {});
       return response.data;
     } catch (error) {
       console.error('Error creating thread:', error);
