@@ -12,7 +12,10 @@ const config = {
     server: {
         port: process.env.PORT || 3001,
         cors: {
-            origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+            origin: [
+              'http://localhost:3000',
+              'https://lsei27.github.io/INC_chatbot'
+            ],
             credentials: true
         }
     },
