@@ -19,6 +19,7 @@ try {
 const chatRoutes = require('./routes/chat');
 
 const app = express();
+app.set('trust proxy', 1); // Důvěřuj první proxy (např. Render)
 
 // Middleware
 app.use(helmet());
