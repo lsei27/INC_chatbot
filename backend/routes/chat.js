@@ -10,9 +10,6 @@ console.log('--- DEBUG: Konec diagnostiky importu ---');
 
 // --- DIAGNOSTICKÝ KROK KONČÍ ZDE ---
 
-// 🚀 SPRÁVNÝ IMPORT: Načte celou instanci služby, kterou jste exportoval
-const chatService = require('../services/chatService');
-
 // --- Routes ---
 
 /**
