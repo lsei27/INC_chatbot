@@ -21,9 +21,23 @@ const chatRoutes = require('./routes/chat');
 const app = express();
 app.set('trust proxy', 1); // Důvěřuj první proxy (např. Render)
 
+// --- OPRAVA CORS ZDE ---
+// Definujeme povolené domény přímo zde, abychom měli jistotu, že se použijí.
+const corsOptions = {
+    origin: [
+        'https://lsei27.github.io', // Vaše produkční adresa na GitHub Pages
+        'http://localhost:3000',    // Pro lokální vývoj (např. React)
+        'http://localhost:5173',    // Pro lokální vývoj (např. Vite)
+        'http://127.0.0.1:5500'     // Pro lokální spouštění přes Live Server
+    ],
+    optionsSuccessStatus: 200,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE" // Povolí všechny běžné metody
+};
+
 // Middleware
 app.use(helmet());
-app.use(cors(config.server.cors));
+// Použijeme naši novou, přímo definovanou konfiguraci CORS
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(morgan('combined'));
 
@@ -78,4 +92,4 @@ app.listen(PORT, () => {
     console.log(`🔒 Rate limiting: ${config.security.rateLimit.max} požadavků za ${config.security.rateLimit.windowMs / 60000} minut`);
     console.log(`🤖 OpenAI model: ${config.openai.model}`);
     console.log(`✅ Konfigurace načtena úspěšně`);
-}); 
+});
