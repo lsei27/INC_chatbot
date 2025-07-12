@@ -5,7 +5,7 @@ const config = {
         apiKey: process.env.OPENAI_API_KEY,
         organization: process.env.OPENAI_ORG_ID,
         assistantId: process.env.OPENAI_ASSISTANT_ID,
-        model: 'gpt-4o-mini'
+        model: 'gpt-4.1'
     },
     
     // Server konfigurace
