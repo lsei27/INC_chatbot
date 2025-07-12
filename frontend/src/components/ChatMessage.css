@@ -31,8 +31,8 @@
 }
 
 .chat-message.assistant .message-bubble {
-  background: #E53137;
-  color: #fff;
+  background: #E53137 !important;
+  color: #fff !important;
   border-radius: 22px;
 }
 
