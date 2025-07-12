@@ -31,7 +31,7 @@ npm start
 🚀 Server běží na portu 3001
 📡 API dostupné na http://localhost:3001/api
 🔒 Rate limiting: 100 požadavků za 15 minut
-🤖 OpenAI model: gpt-4o-mini
+🤖 OpenAI model: gpt-4.1
 ✅ Konfigurace načtena úspěšně
 ```
 
@@ -67,7 +67,7 @@ curl http://localhost:3001/api/health
   "config": {
     "hasOpenAIKey": true,
     "hasAssistantId": true,
-    "model": "gpt-4o-mini"
+    "model": "gpt-4.1"
   }
 }
 ```
