@@ -58,10 +58,16 @@ const getLeadByThread = (threadId) => {
   return stmt.get(threadId);
 };
 
+const getAllLeads = () => {
+  const stmt = db.prepare('SELECT * FROM chat_leads ORDER BY createdAt DESC;');
+  return stmt.all();
+};
+
 module.exports = {
   saveMessage,
   getAllMessages,
   getMessagesByThread,
   saveLead,
   getLeadByThread,
+  getAllLeads,
 }; 
