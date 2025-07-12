@@ -6,6 +6,7 @@ const router = express.Router();
 const ChatService = require('../services/chatService');
 // 2. Podle receptu vytvoříme funkční objekt, se kterým budeme pracovat.
 const chatService = new ChatService();
+const chatHistory = require('../services/chatHistoryService');
 
 // --- ROUTES ---
 
@@ -16,7 +17,14 @@ const chatService = new ChatService();
  */
 router.post('/thread', async (req, res, next) => {
     try {
+        const { name, email, phone } = req.body;
         const thread = await chatService.createThread();
+
+        // Uložit lead do DB, pokud jsou údaje vyplněné
+        if (name && email && phone) {
+            chatHistory.saveLead(thread.id, name, email, phone);
+        }
+
         res.status(201).json({
             success: true,
             message: 'Thread byl úspěšně vytvořen.',
@@ -24,7 +32,6 @@ router.post('/thread', async (req, res, next) => {
         });
     } catch (error) {
         console.error('Thread creation error:', error.message);
-        // Předá chybu dál centrálnímu error handleru
         next(error);
     }
 });
