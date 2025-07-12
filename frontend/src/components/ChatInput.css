@@ -1,10 +1,11 @@
 .chat-input-container {
   display: flex;
   align-items: center;
-  background: #111;
+  background: #18181a;
   border-radius: 16px;
-  padding: 8px 16px;
-  margin-top: 16px;
+  padding: 10px 18px;
+  margin-top: 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
 .chat-input-form {
@@ -35,8 +36,9 @@
   border: none;
   color: #fff;
   font-size: 1.1rem;
-  padding: 10px;
+  padding: 12px;
   outline: none;
+  font-family: 'Helvetica Neue', 'San Francisco', Arial, system-ui, sans-serif;
 }
 
 .chat-input::placeholder {
@@ -50,20 +52,21 @@
 
 .send-button {
   background: #fff;
-  color: #000;
+  color: #111;
   border: none;
-  border-radius: 12px;
-  padding: 8px 18px;
-  margin-left: 10px;
-  font-weight: bold;
-  font-size: 1rem;
+  border-radius: 14px;
+  padding: 10px 22px;
+  margin-left: 12px;
+  font-weight: 600;
+  font-size: 1.05rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
 .send-button:hover {
-  background: #b3b3b3;
-  color: #000;
+  background: #d1d1d6;
+  color: #111;
 }
 
 .send-button:disabled {
