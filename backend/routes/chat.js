@@ -1,68 +1,91 @@
 const express = require('express');
 const router = express.Router();
 
-// --- DIAGNOSTICKÝ KROK ZAČÍNÁ ZDE ---
-console.log('--- DEBUG: Pokouším se importovat chatService ---');
-const chatService = require('../services/chatService');
-console.log('--- DEBUG: Objekt chatService po importu: ---');
-console.log(chatService);
-console.log('--- DEBUG: Konec diagnostiky importu ---');
+// --- OPRAVA ZDE ---
+// 1. Importujeme "recept" (třídu) a uložíme ho do proměnné s velkým 'C'.
+const ChatService = require('../services/chatService');
+// 2. Podle receptu vytvoříme funkční objekt, se kterým budeme pracovat.
+const chatService = new ChatService();
 
-// --- DIAGNOSTICKÝ KROK KONČÍ ZDE ---
-
-// --- Routes ---
+// --- ROUTES ---
 
 /**
  * @route   POST /api/chat/thread
- * @desc    Vytvoří nové prázdné konverzační vlákno (thread)
+ * @desc    Vytvoří nové prázdné konverzační vlákno (thread).
  * @access  Public
  */
 router.post('/thread', async (req, res, next) => {
     try {
-        // Zavolá metodu na naší naimportované službě
         const thread = await chatService.createThread();
-        res.status(201).json({ 
-            message: 'Thread byl úspěšně vytvořen',
-            threadId: thread.id 
+        res.status(201).json({
+            success: true,
+            message: 'Thread byl úspěšně vytvořen.',
+            data: { threadId: thread.id }
         });
     } catch (error) {
-        // Předá chybu centrálnímu error handleru
+        console.error('Thread creation error:', error.message);
+        // Předá chybu dál centrálnímu error handleru
         next(error);
     }
 });
 
 /**
  * @route   POST /api/chat/message
- * @desc    Odešle zprávu asistentovi a získá odpověď
+ * @desc    Odešle zprávu do existujícího vlákna a získá odpověď.
  * @access  Public
  */
 router.post('/message', async (req, res, next) => {
     try {
+        // Zpráva a ID vlákna se posílají v těle požadavku
         const { message, threadId } = req.body;
-
-        if (!message) {
-            return res.status(400).json({ error: 'Chybí zpráva (message) v těle požadavku' });
+        
+        // Základní validace
+        if (!message || typeof message !== 'string') {
+            return res.status(400).json({
+                success: false,
+                error: 'Chybný požadavek',
+                message: 'Pole "message" je povinné a musí být textový řetězec.'
+            });
+        }
+        
+        if (!threadId) {
+             return res.status(400).json({
+                success: false,
+                error: 'Chybný požadavek',
+                message: 'Pole "threadId" je povinné.'
+            });
         }
 
-        const response = await chatService.sendMessage(message, threadId);
-        res.json(response);
-
+        const result = await chatService.sendMessage(message, threadId);
+        
+        res.json({
+            success: true,
+            data: result
+        });
+        
     } catch (error) {
+        console.error('Chat message error:', error.message);
         next(error);
     }
 });
 
 /**
- * @route   GET /api/chat/:threadId/messages
- * @desc    Získá všechny zprávy z daného vlákna
+ * @route   GET /api/chat/thread/:threadId
+ * @desc    Získá historii zpráv z konkrétního vlákna.
  * @access  Public
  */
-router.get('/:threadId/messages', async (req, res, next) => {
+router.get('/thread/:threadId', async (req, res, next) => {
     try {
         const { threadId } = req.params;
         const messages = await chatService.getThreadMessages(threadId);
-        res.json(messages);
+        
+        res.json({
+            success: true,
+            data: messages
+        });
+        
     } catch (error) {
+        console.error('Get thread messages error:', error.message);
         next(error);
     }
 });
