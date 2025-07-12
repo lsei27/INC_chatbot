@@ -81,8 +81,8 @@ const ChatInterface = ({ isConnected, setIsConnected }) => {
           {messages.length === 0 && !isLoading && (
             <div className="welcome-message">
               <div className="welcome-icon">👋</div>
-              <h3>Vítejte v AI Chatbotu!</h3>
-              <p>Začněte konverzaci s vaším OpenAI asistentem.</p>
+              <h3>Vítejte v IN CATERING</h3>
+              <p>Začněte konverzaci s naším AI Chatbotem.</p>
             </div>
           )}
           
