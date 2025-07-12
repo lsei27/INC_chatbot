@@ -12,24 +12,25 @@
 }
 
 .message-bubble {
-  background: #111;
+  background: #18181a;
   color: #fff;
-  border-radius: 18px;
-  padding: 14px 20px;
+  border-radius: 20px;
+  padding: 16px 22px;
   max-width: 70%;
-  font-size: 1.1rem;
+  font-size: 1.08em;
   font-weight: 400;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: background 0.2s;
 }
 
 .chat-message.user .message-bubble {
-  background: #222;
+  background: #232326;
   color: #fff;
   font-weight: 500;
 }
 
 .chat-message.assistant .message-bubble {
-  background: #191919;
+  background: #19191b;
   color: #b3b3b3;
 }
 
@@ -86,12 +87,10 @@
 }
 
 .message-text {
-  background: var(--color-card);
-  padding: 0.75rem 1rem;
-  border-radius: 18px;
-  border: 1px solid var(--color-border);
-  word-wrap: break-word;
-  line-height: 1.4;
+  font-family: 'Helvetica Neue', 'San Francisco', Arial, system-ui, sans-serif;
+  font-size: 1.08em;
+  background: none;
+  padding: 0;
 }
 
 .message-user .message-text {
@@ -110,6 +109,28 @@
   background: rgba(255, 69, 58, 0.1);
   color: #ff453a;
   border-color: #ff453a;
+}
+
+.message-text p {
+  margin: 0 0 1em 0;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.message-text ul,
+.message-text ol {
+  font-family: inherit;
+  margin: 0 0 1.2em 1.7em;
+  padding-left: 1.2em;
+}
+
+.message-text li {
+  font-family: inherit;
+  margin-bottom: 1em;
+  line-height: 1.7;
+  list-style-position: inside;
+  color: #d1d1d6;
+  font-size: 1em;
 }
 
 .message-time {
