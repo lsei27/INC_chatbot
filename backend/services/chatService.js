@@ -1,5 +1,6 @@
 const OpenAI = require('openai');
 const config = require('../../config/config');
+const chatHistory = require('./chatHistoryService');
 
 // Inicializace OpenAI klienta
 const openai = new OpenAI({
@@ -42,6 +43,9 @@ class ChatService {
                 }
             );
 
+            // Uložit uživatelskou zprávu do historie
+            await chatHistory.saveMessage(threadId, 'user', message, new Date().toISOString());
+
             // Spustit run s asistentem
             const run = await openai.beta.threads.runs.create(
                 threadId,
@@ -59,6 +63,16 @@ class ChatService {
                 msg.role === 'assistant' && 
                 msg.run_id === run.id
             );
+
+            // Uložit odpověď asistenta do historie
+            if (assistantMessage) {
+                await chatHistory.saveMessage(
+                    threadId,
+                    'assistant',
+                    assistantMessage.content[0]?.text?.value || '',
+                    new Date().toISOString()
+                );
+            }
 
             return {
                 threadId,
@@ -98,13 +112,7 @@ class ChatService {
     // Získat zprávy z threadu
     async getThreadMessages(threadId) {
         try {
-            const messages = await openai.beta.threads.messages.list(threadId);
-            return messages.data.map(msg => ({
-                id: msg.id,
-                role: msg.role,
-                content: msg.content[0]?.text?.value || '',
-                createdAt: msg.created_at
-            }));
+            return await chatHistory.getMessagesByThread(threadId);
         } catch (error) {
             console.error('Error getting thread messages:', error);
             throw new Error('Nepodařilo se získat zprávy z threadu');
