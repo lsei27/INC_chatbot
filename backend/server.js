@@ -17,6 +17,7 @@ try {
 }
 
 const chatRoutes = require('./routes/chat');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 app.set('trust proxy', 1); // Důvěřuj první proxy (např. Render)
@@ -47,6 +48,7 @@ app.use('/api/', limiter);
 
 // Routes
 app.use('/api/chat', chatRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
