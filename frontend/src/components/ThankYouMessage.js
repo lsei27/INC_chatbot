@@ -22,8 +22,8 @@ const ThankYouMessage = ({ userInfo, onRestartChat }) => {
           </div>
           <div className="contact-item">
             <span className="contact-label">Telefon:</span>
-            <a href="tel:+420123456789" className="contact-link">
-              +420 123 456 789
+            <a href="tel:+420220560494" className="contact-link">
+              +420 220 560 494
             </a>
           </div>
         </div>
