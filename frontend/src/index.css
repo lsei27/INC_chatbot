@@ -24,11 +24,13 @@
 }
 
 body {
-  background: #000;
+  font-family: 'Helvetica Neue', 'San Francisco', Arial, system-ui, sans-serif;
+  background: #111;
   color: #fff;
-  font-family: 'Inter', 'Arial', 'Helvetica Neue', sans-serif;
   margin: 0;
   padding: 0;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
