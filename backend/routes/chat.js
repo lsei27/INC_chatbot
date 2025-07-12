@@ -22,7 +22,7 @@ router.post('/thread', async (req, res, next) => {
 
         // Uložit lead do DB, pokud jsou údaje vyplněné
         if (name && email && phone) {
-            chatHistory.saveLead(thread.id, name, email, phone);
+            await chatHistory.saveLead(thread.id, name, email, phone);
         }
 
         res.status(201).json({
