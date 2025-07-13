@@ -12,28 +12,30 @@
 }
 
 .message-bubble {
-  background: #18181a;
+  background: #232326;
   color: #fff;
   border-radius: 22px;
-  padding: 12px 18px;
+  padding: 16px 22px;
   max-width: 70%;
   font-size: 1.08em;
   font-weight: 400;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: none;
   transition: background 0.2s;
 }
 
 .chat-message.user .message-bubble {
-  background: linear-gradient(90deg, #E53137 0%, #ff6a6a 100%);
+  background: #E53137;
   color: #fff;
   font-weight: 500;
   border-radius: 22px;
+  box-shadow: none;
 }
 
 .chat-message.assistant .message-bubble {
-  background: #E53137 !important;
+  background: #232326 !important;
   color: #fff !important;
   border-radius: 22px;
+  box-shadow: none;
 }
 
 .message-user {
@@ -48,35 +50,8 @@
   flex-direction: row;
 }
 
-.message-avatar {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-bg-secondary);
-  border: 2px solid var(--color-border);
-}
-
-.message-user .message-avatar {
-  background: var(--color-primary-gradient);
-  border-color: var(--color-primary);
-}
-
-.message-assistant .message-avatar {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-}
-
-.message-error .message-avatar {
-  background: #ff453a;
-  border-color: #ff453a;
-}
-
-.message-icon {
-  font-size: 1.2rem;
+.message-avatar, .message-icon {
+  display: none !important;
 }
 
 .message-content {
