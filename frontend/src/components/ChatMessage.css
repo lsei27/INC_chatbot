@@ -57,7 +57,7 @@
 
 .message-content {
   flex: 1;
-  max-width: 70%;
+  max-width: 100%;
 }
 
 .message-user .message-content {
