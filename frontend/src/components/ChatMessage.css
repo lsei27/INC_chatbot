@@ -16,14 +16,15 @@
   color: #fff;
   border-radius: 22px;
   padding: 16px 22px;
-  max-width: 90%;
+  max-width: 100%;
+  width: 100%;
   font-size: 1.08em;
   font-weight: 400;
   box-shadow: none;
   transition: background 0.2s;
 }
 
-.chat-message.user .message-bubble {
+.chat-message.message-user .message-bubble {
   background: #E53137;
   color: #fff;
   font-weight: 500;
@@ -31,7 +32,7 @@
   box-shadow: none;
 }
 
-.chat-message.assistant .message-bubble {
+.chat-message.message-assistant .message-bubble {
   background: #232326 !important;
   color: #fff !important;
   border-radius: 22px;
