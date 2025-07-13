@@ -40,13 +40,11 @@ const ChatMessage = ({ message }) => {
 
   return (
     <div className={`chat-message ${getMessageClass(role)}`}>
-      <div className="message-avatar">
-        <span className="message-icon">{getMessageIcon(role)}</span>
-      </div>
-      
       <div className="message-content">
-        <div className="message-text">
-          <ReactMarkdown>{content}</ReactMarkdown>
+        <div className="message-bubble">
+          <div className="message-text">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </div>
         </div>
         
         <div className="message-time">
