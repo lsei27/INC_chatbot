@@ -16,7 +16,7 @@
   color: #fff;
   border-radius: 22px;
   padding: 16px 22px;
-  max-width: 70%;
+  max-width: 90%;
   font-size: 1.08em;
   font-weight: 400;
   box-shadow: none;
@@ -66,20 +66,15 @@
 .message-text {
   font-family: 'Helvetica Neue', 'San Francisco', Arial, system-ui, sans-serif;
   font-size: 1.08em;
-  background: none;
+  background: none !important;
   padding: 6px 0;
 }
 
-.message-user .message-text {
-  background: var(--color-primary-gradient);
-  color: white;
-  border-color: var(--color-primary);
-}
-
+.message-user .message-text,
 .message-assistant .message-text {
-  background: var(--color-card);
-  color: var(--color-text);
-  border-color: var(--color-border);
+  background: none !important;
+  color: inherit !important;
+  border: none !important;
 }
 
 .message-error .message-text {
